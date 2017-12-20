@@ -59,4 +59,3 @@ board[7][4] = '.'
 newboard, steps = free_steps(board, 'W', True)
 print(print_board(newboard))
 print(steps)
-# ALL WORK! LIFE IS GOOD!
