@@ -50,7 +50,7 @@ def print_board(board):
 
 # TEST:
 board = initial_board()
-board[3][2] = 'W'
+board[3][4] = 'W'
 newboard, steps = free_steps(board, 'B', True)
 print(print_board(newboard))
 print(steps)
