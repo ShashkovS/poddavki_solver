@@ -1,34 +1,30 @@
 from copy import deepcopy
+EMPTY, WHITE, BLACK = '.', 'W', 'B'
 
-EMPTY,    WHITE, BLACK = '.', 'W', 'B'
 
-
-def free_steps(my_board, fig):
-    board = deepcopy(my_board)
-    free_steps = []
-    nextlin = 1 if fig == 'B' else -1
-    for lin in range(0, 7):
-        for col in range(int(lin % 2 == 0), 7, 2):
-            if board[lin][col] == fig:
-                for i in (-1, 1):
-                    try:
+def free_steps(myboard, fig, need_coordinates=False):
+    board = deepcopy(myboard)
+    nextlin, free_steps = (1 if fig == 'B' else -1), []
+    for lin in range(0, 8):
+        for col in range(int(lin % 2 == 0), 8, 2):
+            for i in (1, -1):
+                try:
+                    if board[lin][col] == fig:
                         if board[lin + nextlin][col + i] == '.':
                             board[lin + nextlin][col + i] = '*'
                             free_steps.append([lin + nextlin, col + i])
-                        elif board[lin + nextlin][col + i] != fig:
-                            try:
-                                if board[lin + nextlin * 2][col + i * 2] == '.':
-                                    board[lin + nextlin * 2][col + i * 2] = '*'
-                                    free_steps.append([lin + nextlin * 2, col + i * 2])
-                                if board[lin + nextlin * 2][col - i]:
-                            except:
-                                None
-
-                    except:
-                        None
-
-    return board
-
+                        elif board[lin + nextlin][col + i] not in (fig, '*') and board[lin + nextlin * 2][col + i * 2] == '.':
+                            board[lin + nextlin * 2][col + i * 2] = '*'
+                            free_steps.append([lin + nextlin * 2, col + i * 2])
+                        elif board[lin - nextlin][col + i] not in (fig, '*', '.') and board[lin - nextlin * 2][col + i * 2] == '.':
+                            board[lin - nextlin * 2][col + i * 2] = '*'
+                            free_steps.append([lin - nextlin * 2, col + i * 2])
+                except:
+                    None
+    if need_coordinates:
+        return board, free_steps
+    else:
+        return board
 
 
 def initial_board():
@@ -54,4 +50,13 @@ def print_board(board):
     return rep
 
 
-print(print_board(free_steps(initial_board(), 'B')))
+# TEST:
+board = initial_board()
+board[3][2] = 'W'
+board[4][3] = 'B'
+board[6][5] = 'B'
+board[7][4] = '.'
+newboard, steps = free_steps(board, 'W', True)
+print(print_board(newboard))
+print(steps)
+# ALL WORK! LIFE IS GOOD!
