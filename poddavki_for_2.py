@@ -20,4 +20,4 @@ for pos in range(32 * 33 * 3):
         print(first_cell, second_cell)
         if first_cell[0] == second_cell[0]:
             table_ro_poddavki[pos_l] = 0 if first_cell[0] == 'W' else 255
-print(table_ro_poddavki)
+print(table_ro_poddavki) # на выходе получается таблица оз 0, 255, 253. 0 - победа белых 255 - черных 253 - простой оценкой определить сложно
