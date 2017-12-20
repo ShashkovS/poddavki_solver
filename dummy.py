@@ -13,10 +13,14 @@ def free_steps(myboard, fig, need_coordinates=False):
                         if board[lin + nextlin][col + i] == '.':
                             board[lin + nextlin][col + i] = '*'
                             free_steps.append([lin + nextlin, col + i])
-                        elif board[lin + nextlin][col + i] not in (fig, '*'):
-                            if board[lin + nextlin * 2][col + i * 2] == '.':
+                        elif board[lin - nextlin][col + i] not in (fig, '*', '.'):
+                            if board[lin - nextlin * 2][col + i * 2] == '.':
                                 board[lin + nextlin * 2][col + i * 2] = '*'
                                 free_steps.append([lin + nextlin * 2, col + i * 2])
+                        elif board[lin + nextlin][col + i] not in (fig, '*'):
+                            if board[lin + nextlin * 2][col + i * 2] == '.':
+                                board[lin - nextlin * 2][col + i * 2] = '*'
+                                free_steps.append([lin - nextlin * 2, col + i * 2])
                 except:
                     None
     if need_coordinates:
@@ -50,8 +54,11 @@ def print_board(board):
 
 # TEST:
 board = initial_board()
-board[3][4] = 'W'
-newboard, steps = free_steps(board, 'B', True)
+board[3][2] = 'W'
+board[4][3] = 'B'
+board[6][5] = 'B'
+board[7][4] = '.'
+newboard, steps = free_steps(board, 'W', True)
 print(print_board(newboard))
 print(steps)
 # ALL WORK! LIFE IS GOOD!
