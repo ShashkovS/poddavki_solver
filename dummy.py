@@ -13,14 +13,12 @@ def free_steps(myboard, fig, need_coordinates=False):
                         if board[lin + nextlin][col + i] == '.':
                             board[lin + nextlin][col + i] = '*'
                             free_steps.append([lin + nextlin, col + i])
-                        elif board[lin - nextlin][col + i] not in (fig, '*', '.'):
-                            if board[lin - nextlin * 2][col + i * 2] == '.':
-                                board[lin + nextlin * 2][col + i * 2] = '*'
-                                free_steps.append([lin + nextlin * 2, col + i * 2])
-                        elif board[lin + nextlin][col + i] not in (fig, '*'):
-                            if board[lin + nextlin * 2][col + i * 2] == '.':
-                                board[lin - nextlin * 2][col + i * 2] = '*'
-                                free_steps.append([lin - nextlin * 2, col + i * 2])
+                        elif board[lin + nextlin][col + i] not in (fig, '*') and board[lin + nextlin * 2][col + i * 2] == '.':
+                            board[lin + nextlin * 2][col + i * 2] = '*'
+                            free_steps.append([lin + nextlin * 2, col + i * 2])
+                        elif board[lin - nextlin][col + i] not in (fig, '*', '.') and board[lin - nextlin * 2][col + i * 2] == '.':
+                            board[lin - nextlin * 2][col + i * 2] = '*'
+                            free_steps.append([lin - nextlin * 2, col + i * 2])
                 except:
                     None
     if need_coordinates:
