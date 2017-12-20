@@ -1,0 +1,5 @@
+build/
+dist/
+poddavki_solver.egg-info/
+/**/__pycache__/
+/**/.idea/
