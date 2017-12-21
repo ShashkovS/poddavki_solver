@@ -1,5 +1,5 @@
 table_ro_poddavki = [253] * 32 * 33 * 3
-first_step = int(input())
+first_step = 1
 
 
 def swap_pos_num(cell_pos):
