@@ -1,61 +1,47 @@
-from copy import deepcopy
-EMPTY, WHITE, BLACK = '.', 'W', 'B'
+table_ro_poddavki = [253] * 32 * 33 * 3
+first_step = int(input())
 
 
-def free_steps(myboard, fig, need_coordinates=False):
-    board = deepcopy(myboard)
-    nextlin, free_steps = (1 if fig == 'B' else -1), []
-    for lin in range(0, 8):
-        for col in range(int(lin % 2 == 0), 8, 2):
-            for i in (1, -1):
-                try:
-                    if board[lin][col] == fig:
-                        if board[lin + nextlin][col + i] == '.':
-                            board[lin + nextlin][col + i] = '*'
-                            free_steps.append([lin + nextlin, col + i])
-                        elif board[lin + nextlin][col + i] not in (fig, '*') and board[lin + nextlin * 2][col + i * 2] == '.':
-                            board[lin + nextlin * 2][col + i * 2] = '*'
-                            free_steps.append([lin + nextlin * 2, col + i * 2])
-                        elif board[lin - nextlin][col + i] not in (fig, '*', '.') and board[lin - nextlin * 2][col + i * 2] == '.':
-                            board[lin - nextlin * 2][col + i * 2] = '*'
-                            free_steps.append([lin - nextlin * 2, col + i * 2])
-                except:
-                    None
-    if need_coordinates:
-        return board, free_steps
+def swap_pos_num(cell_pos):
+    if (first_cell[1] + 3) % 8 == 0:
+        first_cell[1] = (first_cell[1] * 2) + 1
     else:
-        return board
+        first_cell[1] *= 2
 
 
-def initial_board():
-    board = [[EMPTY for i in range(8)] for j in range(8)]
-    black_cells = [[0, 1], [0, 3], [0, 5], [0, 7],
-                   [1, 0], [1, 2], [1, 4], [1, 6],
-                   [2, 1], [2, 3], [2, 5], [2, 7]]
-    white_cells = [[7, 0], [7, 2], [7, 4], [7, 6],
-                   [6, 1], [6, 3], [6, 5], [6, 7],
-                   [5, 0], [5, 2], [5, 4], [5, 6]]
-    for bc in black_cells:
-        board[bc[0]][bc[1]] = BLACK
-    for wc in white_cells:
-        board[wc[0]][wc[1]] = WHITE
-    return board
+def check_pos(first_cell, second_cell, num):
+    if abs(first_cell[1] - second_cell[1]) == 7:
+        if (second_cell[1] - 1) % 8 == 0:
+            return num + 1
+    elif abs(first_cell - second_cell) == 9:
+        if second_cell[1] % 8 == 0:
+            return num + 1
+    else:
+        return check_pos(second_cell, first_cell, num + 1)
 
 
-def print_board(board):
-    rep = '    ' + ' '.join(list(map(str, [i for i in range(1, 9)]))) + '\n'
-    for i in range(1, 9):
-        rep += '\n' + str(i) + '   '
-        rep += ' '.join(list(map(str, board[i - 1])))
-    return rep
-
-
-# TEST:
-board = initial_board()
-board[3][2] = 'W'
-board[4][3] = 'B'
-board[6][5] = 'B'
-board[7][4] = '.'
-newboard, steps = free_steps(board, 'W', True)
-print(print_board(newboard))
-print(steps)
+for pos in range(32 * 33 * 3):
+    pos_l = pos
+    pos += 1
+    if (pos + 1) % 3 == 0 and pos % 3 != 0:
+        pos = (pos + 1) // 3
+        first_cell = ['W', pos // 32 + 1]
+        second_cell = ['B', pos % 32 + 1]
+    elif pos % 3 == 0:
+        pos = pos // 3
+        first_cell = ['B', pos // 32 + 1]
+        second_cell = ['B', pos % 32 + 1]
+    elif (pos + 2) % 3 == 0:
+        pos = (pos + 2) // 3
+        first_cell = ['W', pos // 32 + 1]
+        second_cell = ['W', pos % 32 + 1]
+    if first_cell[1] != second_cell[1] and first_cell[1] != 33 and first_cell[1] != 34:
+        print(first_cell, second_cell)
+        if first_cell[0] == second_cell[0]:
+            table_ro_poddavki[pos_l] = 0 if first_cell[0] == 'W' else 255
+    elif first_cell[1] > 32 or first_cell[1] == second_cell[1]:
+        table_ro_poddavki[pos_l] = None
+print(table_ro_poddavki)
+# на выходе получается таблица оз 0, 255, 253.
+# 0 - победа белых 255 - черных
+# 253 - простой оценкой определить сложно
