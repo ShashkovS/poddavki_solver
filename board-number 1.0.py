@@ -1,5 +1,7 @@
-def count_k_symbols(num, k): return '0' * (k - len(str(num))) + str(num)[:k - len(str(num))]
-
+def count_k_symbols(num, k):
+    num = str(num)
+    if len(num) > k: num = num[:k - len(num)]
+    return '0' * (k - len(num)) + num
 
 def print_board(board):
     rep = '     ' + ' '.join(list(map(str, [i for i in range(1, 9)]))) + '\n'
@@ -22,9 +24,10 @@ def num_to_board(num_board):
 
 def board_to_num(board):
     num_board = ''
-    for lin in range(0, 8):
+    for lin in range(0, 8): # Я БЕСПОНЯТИЯ КАК ЭТО СОКРАТИТЬ
         for col in range(int(lin % 2 == 0), 8, 4):
-            if board[lin][col] == '.' and board[lin][col + 2] == 'B': num_board += '1'
+            if board[lin][col] == '.' and board[lin][col + 2] == '.': num_board += '0'
+            elif board[lin][col] == '.' and board[lin][col + 2] == 'B': num_board += '1'
             elif board[lin][col] == '.' and board[lin][col + 2] == 'W': num_board += '2'
             elif board[lin][col] == 'B' and board[lin][col + 2] == '.': num_board += '3'
             elif board[lin][col] == 'B' and board[lin][col + 2] == 'B': num_board += '4'
@@ -49,11 +52,10 @@ def board_to_num(board):
 # 7 = WB
 # 8 = WW
 # В коде 9 = 0
+# Для примера, начальная позиция: 4444440000888888
 
-
-board = num_to_board(int(input()))
+board = num_to_board(4444440000888888)
 num_board = board_to_num(board)
 print(print_board(board))
 print(num_board)
 print('\n\n')
-print(count_k_symbols(12345678901234567890, 16))
