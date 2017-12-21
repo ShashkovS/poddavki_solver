@@ -21,6 +21,7 @@ def free_steps(myboard, fig, need_board=True, need_coordinates=True):
                         if a == 1:
                             try:
                                 if board[lin][col] == fig and board[lin + nextlin][col + i] == '.':
+                                    if lin + nextlin < 0 or col + i < 0:  1 / 0
                                     board[lin + nextlin][col + i] = '*'
                                     free_steps.append([lin + nextlin, col + i])
                             except: None
