@@ -55,6 +55,7 @@ def board_to_num(board):
 #       Начальная позиция: 4444440000888888
 #       Позиция, где W и B стоят по середине: 610000000
 
+
 while True:
     board = num_to_board(int(input()))
     num_board = board_to_num(board)
