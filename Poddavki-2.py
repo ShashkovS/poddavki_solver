@@ -1,17 +1,13 @@
-white_cells = []
-black_cells = []
-white_kings = []
-black_kings = []
-white_cells.append(list(map(int, input().split())))
-black_cells.append(list(map(int, input().split())))
+first_cell = []
+second_cell = []
 
 
-def initial_board():
+def initial_board(colour_1, colour_2, first_cell, second_cell):
     board = [['.' for i in range(8)] for j in range(8)]
-    for bc in black_cells:
-        board[bc[0]][bc[1]] = 'B'
-    for wc in white_cells:
-        board[wc[0]][wc[1]] = 'W'
+    for bc in first_cell:
+        board[bc[0]][bc[1]] = colour_1
+    for wc in second_cell:
+        board[wc[0]][wc[1]] = colour_2
     return board
 
 
@@ -23,4 +19,12 @@ def print_board(board):
     return rep
 
 
-print(print_board(initial_board()))
+for pos_x_1 in range(8):
+    for pos_y_1 in range(8):
+        for colour_1 in 'B', 'W':
+            for pos_x_2 in range(pos_x_1, 8):
+                for pos_y_2 in range(pos_y_1, 8):
+                    for colour_2 in 'B', 'W':
+                        print(print_board(initial_board(colour_1, colour_2, [[pos_x_1, pos_y_1]], [[pos_x_2, pos_y_2]])))
+
+

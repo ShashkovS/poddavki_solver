@@ -2,22 +2,11 @@ table_ro_poddavki = [253] * 32 * 33 * 3
 first_step = 1
 
 
-def swap_pos_num(cell_pos):
-    if (first_cell[1] + 3) % 8 == 0:
-        first_cell[1] = (first_cell[1] * 2) + 1
+def check_pos(first_cell, second_cell):
+    if abs(first_cell[1] * 2 - second_cell[1] * 2) == 8 or abs(first_cell[1] * 2 - second_cell[1] * 2) == 10:
+        return 0 if first_step == 1 else 255
     else:
-        first_cell[1] *= 2
-
-
-def check_pos(first_cell, second_cell, num):
-    if abs(first_cell[1] - second_cell[1]) == 7:
-        if (second_cell[1] - 1) % 8 == 0:
-            return num + 1
-    elif abs(first_cell - second_cell) == 9:
-        if second_cell[1] % 8 == 0:
-            return num + 1
-    else:
-        return check_pos(second_cell, first_cell, num + 1)
+        return 253
 
 
 for pos in range(32 * 33 * 3):
@@ -41,7 +30,11 @@ for pos in range(32 * 33 * 3):
             table_ro_poddavki[pos_l] = 0 if first_cell[0] == 'W' else 255
     elif first_cell[1] > 32 or first_cell[1] == second_cell[1]:
         table_ro_poddavki[pos_l] = None
+    else:
+        table_ro_poddavki[pos_l] = check_pos(first_cell, second_cell)
 print(table_ro_poddavki)
-# на выходе получается таблица оз 0, 255, 253.
-# 0 - победа белых 255 - черных
-# 253 - простой оценкой определить сложно
+# на выходе получается таблица оз 0, 255, 253, None.
+# 0 - победа белых
+# 255 - черных
+# 253 - фишки не находятся рядом
+# None - такой позиции быть не может
