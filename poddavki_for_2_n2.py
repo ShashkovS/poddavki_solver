@@ -34,12 +34,12 @@ def check_av_steps():
         if now_step == 1:
             for wc in white_cells:
                 for i in [1, 1], [1, -1], [-1, 1], [-1, -1]:
-                    if [wc[0] + i[0], wc[1] + i[1]] not in black_cells + white_cells:
+                    if [wc[0] + i[0], wc[1] + i[1]] not in black_cells + white_cells and wc[0] + i[0] <= 7 and wc[0] + i[0] >= 0 and wc[1] + i[1] <= 7 and wc[1] + i[1] >= 0:
                         av_steps.append('W ' + ' '.join(map(str, wc)) + ' to ' + str(wc[0] + i[0]) + ' ' + str(wc[1] + i[1]))
         if now_step == 2:
             for bc in black_cells:
                 for i in [1, 1], [1, -1], [-1, 1], [-1, -1]:
-                    if [bc[0] + i[0], bc[1] + i[1]] not in black_cells + white_cells:
+                    if [bc[0] + i[0], bc[1] + i[1]] not in black_cells + white_cells and bc[0] + i[0] <= 7 and bc[0] + i[0] >= 0 and bc[1] + i[1] <= 7 and bc[1] + i[1] >= 0:
                         av_steps.append('B ' + ' '.join(map(str, bc)) + ' to ' + str(bc[0] + i[0]) + ' ' + str(bc[1] + i[1]))
         return av_steps
 
