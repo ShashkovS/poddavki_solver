@@ -7,22 +7,41 @@ for c in range(int(input())):
 now_step = int(input())
 
 
-def check_need_eat(white_cells, black_cells, now_step):
+def check_need_eat():
     res_check = list()
     if now_step == 1:
         for wc in white_cells:
             for i in [1, 1], [1, -1], [-1, 1], [-1, -1]:
-                if [int(wc[0]) + i[0], int(wc[1]) + i[1]] in black_cells:
-                    if int(wc[0]) + 2 * i[0] >= 0 and int(wc[0]) + 2 * i[0] <= 7 and int(wc[1]) + 2 * i[1] >= 0 and int(wc[1]) + 2 * i[1] <= 7 and [int(wc[0]) + 2 * i[0], int(wc[1]) + 2 * i[1]] not in black_cells + white_cells:
-                        res_check.append('W ' + ' '.join(map(str, wc)) + ' to ' + str(int(wc[0]) + 2 * i[0]) + ' ' + str(int(wc[1]) + 2 * i[1]))
-        return res_check
+                if [wc[0] + i[0], wc[1] + i[1]] in black_cells:
+                    if wc[0] + 2 * i[0] >= 0 and wc[0] + 2 * i[0] <= 7 and wc[1] + 2 * i[1] >= 0 and wc[1] + 2 * i[1] <= 7 and [wc[0] + 2 * i[0], wc[1] + 2 * i[1]] not in black_cells + white_cells:
+                        res_check.append('W ' + ' '.join(map(str, wc)) + ' to ' + str(wc[0] + 2 * i[0]) + ' ' + str(wc[1] + 2 * i[1]) + ' eating ' + 'B ' + str(wc[0] + i[0]) + ' ' + str(wc[1] + i[1]))
     elif now_step == 2:
         for bc in black_cells:
             for l in [1, 1], [1, -1], [-1, 1], [-1, -1]:
-                if [int(bc[0]) + l[0], int(bc[1]) + l[1]] in white_cells:
-                    if int(bc[0]) + 2 * l[0] >= 0 and int(bc[0]) + 2 * l[0] <= 7 and int(bc[1]) + 2 * l[1] >= 0 and int(bc[1]) + 2 * l[1] <= 7 and [int(bc[0]) + 2 * l[0], int(bc[1]) + 2 * l[1]] not in white_cells + black_cells:
-                        res_check.append('B ' + ' '.join(map(str, bc)) + ' to ' + str(int(bc[0]) + 2 * l[0]) + ' ' + str(int(bc[1]) + 2 * l[1]))
+                if [bc[0] + l[0], bc[1] + l[1]] in white_cells:
+                    if bc[0] + 2 * l[0] >= 0 and bc[0] + 2 * l[0] <= 7 and bc[1] + 2 * l[1] >= 0 and bc[1] + 2 * l[1] <= 7 and [bc[0] + 2 * l[0], bc[1] + 2 * l[1]] not in white_cells + black_cells:
+                        res_check.append('B ' + ' '.join(map(str, bc)) + ' to ' + str(bc[0] + 2 * l[0]) + ' ' + str(bc[1] + 2 * l[1]) + ' eating ' + 'W ' + str(bc[0] + l[0]) + ' ' + str(bc[1] + l[1]))
+    return res_check
+
+
+def check_av_steps():
+    res_check = check_need_eat()
+    if len(res_check) != 0:
         return res_check
+    else:
+        print('Ничего срубить нельзя')
+        av_steps = list()
+        if now_step == 1:
+            for wc in white_cells:
+                for i in [1, 1], [1, -1], [-1, 1], [-1, -1]:
+                    if [wc[0] + i[0], wc[1] + i[1]] not in black_cells + white_cells:
+                        av_steps.append('W ' + ' '.join(map(str, wc)) + ' to ' + str(wc[0] + i[0]) + ' ' + str(wc[1] + i[1]))
+        if now_step == 2:
+            for bc in black_cells:
+                for i in [1, 1], [1, -1], [-1, 1], [-1, -1]:
+                    if [bc[0] + i[0], bc[1] + i[1]] not in black_cells + white_cells:
+                        av_steps.append('B ' + ' '.join(map(str, bc)) + ' to ' + str(bc[0] + i[0]) + ' ' + str(bc[1] + i[1]))
+        return av_steps
 
 
 def initial_board(white_cells, black_cells):
@@ -50,8 +69,4 @@ if len(black_cells) == 0:
 elif len(white_cells) == 0:
     print('Белые выиграли')
 else:
-    res_check = check_need_eat(white_cells, black_cells, now_step)
-    if len(res_check) == 0:
-        print('Нет возможности что-либо срубить')
-    else:
-        print(res_check)
+    print(check_av_steps())
